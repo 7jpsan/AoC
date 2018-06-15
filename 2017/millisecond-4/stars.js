@@ -30,7 +30,7 @@ lineReader.on('line', function (line) {
 
 lineReader.on('close', function (line) {
     console.log(`
-        Star 1 - ${star1}
-        Star 2 - ${star2}    
+    Star 1 - ${star1}
+    Star 2 - ${star2}    
     `);
 });

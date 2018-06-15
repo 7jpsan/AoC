@@ -42,8 +42,8 @@ fs.readFile('./input', 'utf8', function (err, data) {
 
     // Results
     console.log(`
-        Star 1 - ${stars(jumpMapS1, afterJumpS1)}
-        Star 2 - ${stars(jumpMapS2, afterJumpS2)}
+    Star 1 - ${stars(jumpMapS1, afterJumpS1)}
+    Star 2 - ${stars(jumpMapS2, afterJumpS2)}
     `);
 
 });

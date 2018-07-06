@@ -46,7 +46,7 @@ function weigthOfATower(t: Tower, tMap: TowerMap): number{
         //Fix weight
         star2 = tMap[t.holding[subTowersWeight.indexOf(index)]].weight + diff;
         subTowersWeight[subTowersWeight.indexOf(index)] += diff;
-        console.log(groupBy(subTowersWeight, identity), diff);
+        
     }
     return t.weight + subTowersWeight.reduce((a, b) => a+b);
 }

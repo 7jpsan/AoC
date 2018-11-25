@@ -42,7 +42,7 @@ while(difference(all, visited).length > 0){
   groups++;
 }
 
-console.log(`
-  Star 1 - ${connected.length}
-  Star 2 - ${groups}
-`);
+console.table({
+  star1: connected.length,
+  star2: groups
+});

@@ -38,10 +38,11 @@ const stars = mapOfWalkAtEachStep
   });
 
 stars.forEach((s) => {
-  console.log(`
-    Star 1 - ${s.latest}
-    Star 2 - ${s.max}
-  `);  
+
+  console.table({
+    star1: s.latest,
+    star2: s.max
+  });  
 });
 
 

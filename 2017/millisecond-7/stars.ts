@@ -21,10 +21,10 @@ const baseTower = find(towers, x => !x.parent)!;
 let star2 = 0;
 weigthOfATower(baseTower, tMap);
 
-console.log(`
-    Star 1 - ${baseTower.program}
-    Star 2 - ${star2}
-`);
+console.table({
+    star1: baseTower.program,
+    star2: star2
+});
 
 function weigthOfATower(t: Tower, tMap: TowerMap): number{
     if(t.holding.length === 0){

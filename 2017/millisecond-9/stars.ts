@@ -55,10 +55,10 @@ function scoreStream(p: Process): void{
 
   });
 
-  console.log(`
-    Star 1 - ${p.total}
-    Star 2 - ${p.garbage}
-  `);
+  console.table({
+    star1: p.total,
+    star2: p.garbage
+});
 }
 
 function entryToProcess(entry: string): Process{

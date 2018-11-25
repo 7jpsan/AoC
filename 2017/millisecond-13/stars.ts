@@ -47,10 +47,10 @@ while(!cleanPass){
 
 const delay = time-1;
 
-console.log(`
-  Star 1 - ${alarmsSum}
-  Star 2 - ${delay}
-`);
+console.table({
+  star1: alarmsSum,
+  star2: delay
+});
 
 
 

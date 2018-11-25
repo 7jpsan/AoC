@@ -15,7 +15,4 @@ const result = (input, compFunc) => input.map((x) => +x).filter( (x,i,a) => x ==
 const calculate1 = result(content, star1Comp);
 const calculate2 = result(content, star2Comp);
 
-console.log(`
-    Star 1 - ${calculate1}
-    Star 2 - ${calculate2}
-`); 
+console.table({star1: calculate1, star2: calculate2}); 

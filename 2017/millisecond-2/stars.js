@@ -36,8 +36,8 @@ lineReader.on('line', function (line) {
 });
 
 lineReader.on('close', function (line) {
-    console.log(`
-    Star 1 - ${checkSumStar1}
-    Star 2 - ${checkSumStar2}    
-    `);
+    console.table({
+        star1: checkSumStar1,
+        star2: checkSumStar2
+    });
 });

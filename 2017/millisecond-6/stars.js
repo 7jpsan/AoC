@@ -43,10 +43,9 @@ fs.readFile('./input', 'utf8', function (err, data) {
         iter++;
     }
     
-    // Results Object.keys(configMap).length <===> configMap[mapKey].iter[1] 
-    console.log(`
-    Star 1 - ${Object.keys(configMap).length}
-    Star 2 - ${configMap[mapKey].iter[1] - configMap[mapKey].iter[0]}
-    `);
-
+    // Results Object.keys(configMap).length <===> configMap[mapKey].iter[1]
+    console.table({
+        star1: Object.keys(configMap).length,
+        star2: configMap[mapKey].iter[1] - configMap[mapKey].iter[0]
+    });
 });

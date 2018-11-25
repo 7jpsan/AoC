@@ -83,7 +83,7 @@ for(let i = 0; i < 64; i++){
   asciiLen.forEach(x => knotStar2.tie(x));
 }
 
-console.log(`
-    Star 1 - ${knotStar1.checkMulti}
-    Star 2 - ${knotStar2.hexHash}
-  `);
+console.table({
+  star1: knotStar1.checkMulti,
+  star2: knotStar2.hexHash
+});

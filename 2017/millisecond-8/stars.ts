@@ -25,11 +25,10 @@ operations.forEach(execute);
 const star1 = currentMaxValue().value;
 const star2 = maxValueEver;
 
-console.log(`
-    Star 1 - ${star1}
-    Star 2 - ${star2}
-`);
-
+console.table({
+  star1,
+  star2
+});
 
 // Helper functions!
 function updateMaxValue(){

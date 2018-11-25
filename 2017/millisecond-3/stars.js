@@ -92,7 +92,7 @@ var input = 289326;
 var result = walker.walk(input);
 
 //Result
-console.log(`
-    Star 1 - ${result.star1}
-    Star 2 - ${result.star2}
-`)
+console.table({
+    star1: result.star1,
+    star2: result.star2
+});

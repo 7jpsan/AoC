@@ -130,7 +130,6 @@ class Character {
   public shield: number = 0;
   public damage: number = 0;
   public name: string = '';
-  public target: Character|null = null;
 
   public constructor(param: {name: string, hp: number, damage: number, mana: number, skills: Skill[]}) {
     this.hp = param.hp;
@@ -140,8 +139,9 @@ class Character {
     this.skills = param.skills;
   }
 
-  public setTarget(target: Character|null): void{
-    this.target = target;
+  public allActions(effects: Effect[]): Skill[]{
+    const possible = this.skills.filter(s => s.cost <= this.mana && !effects.some(e => e.name === s.name));
+    return possible;
   }
 
   public action(name?: string): Skill{
@@ -187,7 +187,7 @@ class Game {
   private turn: number = 0;
   private limitTurns: number = 100;
   
-  public constructor(private players: { boss: Character, party: Character[], effects: Effect[]}) {
+  public constructor(private players: { boss: Character, player: Character, effects: Effect[]}) {
 
   }
 
@@ -202,33 +202,23 @@ class Game {
     effects = effects.filter((e) => e.duration > 0);
   }
 
-  public next(): Character{
-    
-    let c: Character;
+  public next(): {turn: Character, target: Character}{
 
-    if(this.turn >= this.players.party.length){
-      c = this.players.boss;
-      this.turn = 0;
-    }else{
-      c = this.players.party[this.turn++];
-    }
-
-    console.log(`\n-- ${c.name} turn --`);
-    if(c.dead){
-      console.log(`- ${c.name} has no hit points left`);
-      c = this.next();
-    }else{
-      console.log(`- ${this.players.party[0].name} has ${this.players.party[0].hp} hit point${this.players.party[0].hp>1?'s':''}, ${this.players.party[0].shield} armor, ${this.players.party[0].mana} mana`);
+    const t = {turn: {} as Character, target: {} as Character};
+    if(this.players.boss.alive && this.players.player.action){
+      t.turn = (this.turn%2 === 0) ? this.players.player : this.players.boss;
+      t.target = (this.turn%2 === 0) ? this.players.boss : this.players.player;
+      // console.log(t);
+      console.log(`\n-- ${t.turn.name} turn --`);
+      console.log(`- ${this.players.player.name} has ${this.players.player.hp} hit point${this.players.player.hp>1?'s':''}, ${this.players.player.shield} armor, ${this.players.player.mana} mana`);
       console.log(`- ${this.players.boss.name} has ${this.players.boss.hp} hit point${this.players.boss.hp>1?'s':''}`);
     }
-  
-    return c;
+    return t;
   }
 
-  public play(turn: string[]) {
+  public play(actionTurns: string[]) {
 
-    let i = 0;
-    while(this.limitTurns-- > 0 && this.players.boss.alive && this.players.party.some(p => p.alive)){
+    while(this.turn < this.limitTurns && !this.hasFinished){
 
       // Get character and action
       let c = this.next();
@@ -236,19 +226,22 @@ class Game {
       // Apply effects
       this.beginTurn();
       
-      if(c.alive){
-        let a = c.action(turn[i] || undefined);
-        let effect = a.do(c, c.target!);
+      if(!this.hasFinished){
+        let a = c.turn.action(actionTurns[this.turn] || undefined);
+        let effect = a.do(c.turn, c.target);
         if(effect){
           effects.push(effect);
         }
       }
-      i++;
+      this.turn++;
     }
-    console.log(`Boss(alive): ${this.players.boss.alive} and Player(alive): ${this.players.party[0].alive}.`)
+    console.log(`Boss(alive): ${this.players.boss.alive} and Player(alive): ${this.players.player.alive}.`)
 
   }
 
+  public get hasFinished(): boolean{
+    return this.players.boss.dead || this.players.player.dead;
+  }
 }
 
 const boss = new Character({
@@ -282,15 +275,60 @@ const staged_p1 = new Character({
   skills: player_skills
 });
 
-staged_boss.setTarget(staged_p1);
-staged_p1.setTarget(staged_boss);
-
 const g = new Game({
   boss: staged_boss,
-  party: [staged_p1],
+  player: staged_p1,
   effects: effects
 });
 
 const turn = ['Recharge', 'Attack', 'Shield', 'Attack', 'Drain', 'Attack', 'Poison', 'Attack', 'Magic Missile'];
 g.play(turn);
 
+
+type RPG = {
+  mana_finished: number,
+  is_finished: boolean,
+  effects: Effect[],
+  games: RPG[],
+  possible_actions: (game: RPG, character: Character) => Skill[],
+  next: (game: RPG) => void
+}
+
+const board: RPG = {
+  mana_finished: Infinity,
+  is_finished: false,
+  games: [],
+  effects: [],
+  possible_actions: (game: RPG, character: Character) => {
+    return character.allActions(game.effects);
+  },
+  next: (game: RPG) => {
+    
+  }
+}
+
+const aStarMap = {
+
+}
+
+/*
+  State: Player -> Get all Possible Actions based on stats 
+                      ManaCost < ManaLeft
+                      Exists a Finished: ManaUsed+Action < ManaUsed
+                      Each One gets to span a new game.
+
+  {
+    finished_any: true,
+    mana_finished: Infinity
+    games: [ {
+      finished_any: true,
+      mana_finished: Infinity
+      games: [
+
+      ]
+    } ]
+  }
+
+
+*/
+// State

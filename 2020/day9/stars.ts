@@ -54,10 +54,6 @@ const star2 = rawInput.slice(cursors.a, cursors.b + 1).reduce(
   { max: 0, min: star1 }
 );
 
-const {'some': qp, ...others} = {some: 'a'};
-
-console.table({ star1, star2: star2.max + star2.min });
-
 function findPair({ numbers, target }: { numbers: number[]; target: number }) {
   let a = 0;
   let b = numbers.length - 1;
@@ -75,3 +71,5 @@ function findPair({ numbers, target }: { numbers: number[]; target: number }) {
   }
   return false;
 }
+
+console.table({ star1, star2: star2.max + star2.min });
